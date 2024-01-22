@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Game.Common
+namespace Engine.Common
 {
     [DefaultExecutionOrder(-1000)]
     public abstract class Installer : MonoBehaviour
