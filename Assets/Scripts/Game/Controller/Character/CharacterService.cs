@@ -1,7 +1,7 @@
 ﻿using Atomic.Objects;
 using UnityEngine;
 
-namespace Game.Controller
+namespace Game.Controller.Character
 {
     public class CharacterService : MonoBehaviour
     {

@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace Game.Input
 {
-    public class KeyboardFireInput : MonoBehaviour, IFireInput
+    public class MouseFireInput : MonoBehaviour, IFireInput
     {
         public event Action OnFire;
 
         private void Update()
         {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
+            if (UnityEngine.Input.GetMouseButtonDown(0))
                 OnFire?.Invoke();
         }
     }

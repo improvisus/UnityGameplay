@@ -1,0 +1,13 @@
+namespace Game.Common
+{
+    public static class ObjectAPI
+    {
+        public const string FireEvent = nameof(FireEvent);
+        public const string FirePoint = nameof(FirePoint);
+        public const string TakeDamageAction = nameof(TakeDamageAction);
+        public const string Damageable = nameof(Damageable);
+        public const string MoveDirection = nameof(MoveDirection);
+        public const string Transform = nameof(Transform);
+        public const string Reset = nameof(Reset);
+    }
+}

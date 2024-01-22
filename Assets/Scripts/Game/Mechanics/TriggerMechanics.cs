@@ -1,19 +1,23 @@
 ﻿using Atomic.Elements;
-using UnityEngine;
+using Atomic.Objects;
 
 namespace Game.Mechanics
 {
-    public class CollisionMechanics
+    public class TriggerMechanics
     {
-        private readonly IAtomicEvent<Collider> collisionEvent;
-
-        public CollisionMechanics(IAtomicEvent<Collider> collisionEvent)
+        private readonly IAtomicAction<IAtomicObject> collisionAction;
+        private readonly IAtomicAction collisionEvent;
+        
+        public TriggerMechanics(IAtomicAction<IAtomicObject> collisionAction, IAtomicAction collisionEvent)
         {
+            this.collisionAction = collisionAction;
             this.collisionEvent = collisionEvent;
         }
-        public void OnTriggerEnter(Collider other)
+        
+        public void OnTriggerEnter(IAtomicObject other)
         {
-            collisionEvent?.Invoke(other);
+            collisionAction?.Invoke(other);
+            collisionEvent?.Invoke();
         }
     }
 }
