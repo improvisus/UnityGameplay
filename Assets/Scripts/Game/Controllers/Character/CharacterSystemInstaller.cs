@@ -1,9 +1,9 @@
 ﻿using Game.Common;
-using Game.Controller.Bullet;
+using Game.Controllers.Bullet;
 using Game.Input;
 using UnityEngine;
 
-namespace Game.Controller.Character
+namespace Game.Controllers.Character
 {
     public class CharacterSystemInstaller : Installer
     {
@@ -19,7 +19,7 @@ namespace Game.Controller.Character
         
         protected override void Install()
         {
-            characterFireController.Construct(characterService, bulletPool, mouseFireInput);
+            characterFireController.Constructs(characterService, bulletPool, mouseFireInput);
         }
     }
 }

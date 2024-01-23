@@ -5,7 +5,7 @@ using Game.Common;
 using Game.Pooling;
 using UnityEngine;
 
-namespace Game.Controller.Bullet
+namespace Game.Controllers.Bullet
 {
     public class BulletPool : GenericPool<AtomicObject, BulletPool.Args>
     {

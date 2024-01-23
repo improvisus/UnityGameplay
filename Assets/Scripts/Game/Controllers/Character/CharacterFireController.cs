@@ -1,9 +1,9 @@
 using Game.Common;
-using Game.Controller.Bullet;
+using Game.Controllers.Bullet;
 using Game.Input;
 using UnityEngine;
 
-namespace Game.Controller.Character
+namespace Game.Controllers.Character
 {
     public class CharacterFireController : MonoBehaviour
     {
@@ -13,7 +13,7 @@ namespace Game.Controller.Character
         
         private IFireInput fireInput;
         
-        public void Construct(CharacterService characterService, BulletPool bulletPool, IFireInput fireInput)
+        public void Constructs(CharacterService characterService, BulletPool bulletPool, IFireInput fireInput)
         {
             this.characterService = characterService;
             this.bulletPool = bulletPool;
