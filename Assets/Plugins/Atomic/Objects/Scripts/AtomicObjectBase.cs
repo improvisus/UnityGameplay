@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Atomic.Objects
 {
     [AddComponentMenu("Atomic/Atomic Object")]
+    [DefaultExecutionOrder(-1000)]
     public class AtomicObjectBase : MonoBehaviour, IAtomicObject
     {
         [Title("Data"), PropertySpace, PropertyOrder(100)]

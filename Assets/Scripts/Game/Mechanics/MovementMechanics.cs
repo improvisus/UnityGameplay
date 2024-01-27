@@ -18,7 +18,7 @@ namespace Game.Mechanics
 
         public void Update(float deltaTime)
         {
-            transform.Translate(direction.Value * (speed.Value * deltaTime));
+            transform.position += direction.Value * (speed.Value * deltaTime);
         }
     }
 }

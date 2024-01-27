@@ -26,7 +26,6 @@ namespace Game.Elements
         
         public void Update(float deltaTime)
         {
-            //currentTime -= deltaTime;
             currentTime = Mathf.Max(currentTime - deltaTime, 0);
         }
 

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5596066293516826099}
   - component: {fileID: 5596066293516826096}
   - component: {fileID: 5596066293516826097}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5596066293516826108}
-  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5596066293772299526}
+  m_RootOrder: -2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5596066293516826096
 MeshFilter:
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5c289b496d16745f3ab8520270d501c0, type: 2}
+  - {fileID: 2100000, guid: b20a9f1e74c04fe4a922893cd1a8b9e4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 5596066293772299526}
   - component: {fileID: 5596066293772299525}
   - component: {fileID: 6786316006848665593}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,14 +108,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5596066293772299527}
-  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5596066293516826099}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &5596066293772299525
 SphereCollider:
@@ -136,7 +136,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.25
+  m_Radius: 0.06
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6786316006848665593
 MonoBehaviour:
@@ -150,11 +150,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6a17c38545f70c48ba04b400124fbc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transform: {fileID: 5596066293772299526}
-  speed:
-    value: 5
-  direction:
-    value: {x: 0, y: 0, z: 0}
-  countdown:
-    duration: 5
-    currentTime: 0
+  mainTransform: {fileID: 5596066293772299526}
+  moveComponent:
+    speed:
+      value: 5
+    direction:
+      value: {x: 0, y: 0, z: 0}
+  damage:
+    value: 1

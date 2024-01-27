@@ -22,7 +22,8 @@ namespace Game.Pooling
         private int count;
         
         private readonly Queue<T> memoryPool = new Queue<T>();
-        
+        private readonly List<T> activePool = new List<T>();
+
         public void Awake()
         {
             poolContainer.SetActive(false);
@@ -40,7 +41,17 @@ namespace Game.Pooling
         
         public virtual T Create(TArg args)
         {
-            var obj = memoryPool.Dequeue();
+            if (!memoryPool.TryDequeue(out var obj))
+            {
+                if (activePool.Count == 0)
+                    throw new Exception("Pull size error");
+ 
+                obj = activePool[0];
+                activePool.Remove(obj);
+            }
+            
+            activePool.Add(obj);
+            
             SetTransform(obj, instanceContainer.transform);
             obj = Init(obj, args);
             OnCreate?.Invoke(obj);
@@ -49,6 +60,8 @@ namespace Game.Pooling
         
         public virtual void Release(T obj)
         {
+            activePool.Remove(obj);
+            memoryPool.Enqueue(obj);
             OnRelease?.Invoke(obj);
             SetTransform(obj, poolContainer.transform);
         }
@@ -58,8 +71,11 @@ namespace Game.Pooling
         protected virtual T CreateInstance(T model)
         {
             var obj = poolContainer != null ? Instantiate(model, poolContainer.transform) : Instantiate(model);
+            Install(obj);
             return obj;
         }
+
+        protected virtual void Install(T obj){ }
         
         protected virtual void RemoveInstance(T model)
         {
