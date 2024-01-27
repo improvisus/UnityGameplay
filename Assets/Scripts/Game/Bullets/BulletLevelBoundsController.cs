@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Game.Level;
+﻿using Game.Level;
 using UnityEngine;
 
 namespace Game.Bullets
@@ -9,35 +8,13 @@ namespace Game.Bullets
         [SerializeField]
         private LevelBounds levelBounds;
         
+        private BulletsService bulletsService;
         private BulletPool bulletPool;
-
-        private readonly List<GameObject> bullets = new List<GameObject>();
         
-        public void Construct(BulletPool bulletPool)
+        public void Construct(BulletsService bulletsService, BulletPool bulletPool)
         {
+            this.bulletsService = bulletsService;
             this.bulletPool = bulletPool;
-        }
-        
-        private void OnEnable()
-        {
-            bulletPool.OnCreate += BulletFactoryOnCreate;
-            bulletPool.OnRelease += BulletFactoryOnRelease;
-        }
-
-        private void OnDisable()
-        {
-            bulletPool.OnCreate -= BulletFactoryOnCreate;
-            bulletPool.OnRelease -= BulletFactoryOnRelease;
-        }
-        
-        private void BulletFactoryOnCreate(GameObject bullet)
-        {
-            bullets.Add(bullet);
-        }
-    
-        private void BulletFactoryOnRelease(GameObject bullet)
-        {
-            bullets.Remove(bullet);
         }
 
         private void FixedUpdate()
@@ -47,9 +24,9 @@ namespace Game.Bullets
         
         private void CheckBounds()
         {
-            for (int n = bullets.Count - 1; n >= 0; n--)
+            for (int n = bulletsService.Bullets.Count - 1; n >= 0; n--)
             {
-                var thisBullet = bullets[n];
+                var thisBullet = bulletsService.Bullets[n];
                 if (!levelBounds.InBounds(thisBullet.transform.position))
                     bulletPool.Release(thisBullet);
             }

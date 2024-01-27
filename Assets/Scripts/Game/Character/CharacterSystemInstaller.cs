@@ -1,5 +1,6 @@
 ﻿using Game.Bullets;
 using Game.Common;
+using Game.Components;
 using Game.Input;
 using UnityEngine;
 
@@ -26,8 +27,11 @@ namespace Game.Character
         protected override void Install()
         {
             characterMoveController.Construct(characterService, keyboardHorizontalMoveInput);
-            characterFireController.Construct(characterService, bulletPool, keyboardFireInput);
+            characterFireController.Construct(characterService, keyboardFireInput);
             characterDeathObserver.Construct(characterService);
+
+            var weaponComponent = characterService.Character.GetComponent<WeaponComponent>();
+            weaponComponent.Construct(bulletPool);
         }
     }
 }

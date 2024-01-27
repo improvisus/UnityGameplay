@@ -1,4 +1,5 @@
 ﻿using Game.Components;
+using Game.Components.Rules;
 using UnityEngine;
 
 namespace Game.Bullets
@@ -38,19 +39,12 @@ namespace Game.Bullets
 
         private void OnBulletCollision(GameObject bullet, Collision2D collision)
         {
+            if (!bullet.TryGetComponent(out BulletCollisionRule bulletCollisionRule))
+                return;
+            
             var other = collision.gameObject;
-            if (!other.TryGetComponent(out TeamComponent team))
-                return;
+            bulletCollisionRule.Collision(other);
 
-            var teamBullet = bullet.GetComponent<TeamComponent>();
-            if(teamBullet.Type == team.Type)
-                return;
-
-            if (other.TryGetComponent(out HitPointsComponent hitPoints))
-            {
-                var damageComponent = bullet.GetComponent<DamageComponent>();
-                hitPoints.TakeDamage(damageComponent.Damage);
-            }
             bulletPool.Release(bullet);
         }
     }

@@ -1,9 +1,8 @@
-using Game.Components;
 using UnityEngine;
 
-namespace Game.Enemy.Agents
+namespace Game.Components.Rules
 {
-    public class EnemyMoveAgent : MonoBehaviour
+    public class EnemyMoveRule : MonoBehaviour
     {
         [SerializeField]
         private float reachingDistance = 0.25f;

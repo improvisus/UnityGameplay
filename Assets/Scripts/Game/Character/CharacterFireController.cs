@@ -9,16 +9,14 @@ namespace Game.Character
     {
         private CharacterService characterService;
         
-        private BulletPool bulletFactory;
         
         private IFireInput fireInput;
         
         private WeaponComponent weaponComponent;
         
-        public void Construct(CharacterService characterService, BulletPool bulletFactory, IFireInput fireInput)
+        public void Construct(CharacterService characterService, IFireInput fireInput)
         {
             this.characterService = characterService;
-            this.bulletFactory = bulletFactory;
             this.fireInput = fireInput;
         }
         
@@ -39,17 +37,18 @@ namespace Game.Character
         
         private void OnFire()
         {
-            var bulletConfig = weaponComponent.BulletConfig;
-            bulletFactory.Create(new BulletPool.Args
-            {
-                teamType = bulletConfig.teamType,
-                physicsLayer = bulletConfig.physicsLayer,
-                color = bulletConfig.color,
-                damage = bulletConfig.damage,
-                position = weaponComponent.Position,
-                direction = Vector2.up,
-                speed = bulletConfig.speed
-            });
+            weaponComponent.Fire(Vector2.up);
+            // var bulletConfig = weaponComponent.BulletConfig;
+            // bulletFactory.Create(new BulletPool.Args
+            // {
+            //     teamType = bulletConfig.teamType,
+            //     physicsLayer = bulletConfig.physicsLayer,
+            //     color = bulletConfig.color,
+            //     damage = bulletConfig.damage,
+            //     position = weaponComponent.Position,
+            //     direction = Vector2.up,
+            //     speed = bulletConfig.speed
+            // });
         }
     }
 }

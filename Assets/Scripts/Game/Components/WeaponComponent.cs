@@ -10,11 +10,28 @@ namespace Game.Components
 
         [SerializeField]
         private Transform firePoint;
-
-        public BulletConfig BulletConfig => bulletConfig;
-
+        
         public Vector2 Position => firePoint.position;
+        
+        private BulletPool bulletPool;
 
-        public Quaternion Rotation => firePoint.rotation;
+        public void Construct(BulletPool bulletPool)
+        {
+            this.bulletPool = bulletPool;
+        }
+        
+        public void Fire(Vector2 direction)
+        {
+            bulletPool.Create(new BulletPool.Args
+            {
+                teamType = bulletConfig.teamType,
+                physicsLayer = bulletConfig.physicsLayer,
+                color = bulletConfig.color,
+                damage = bulletConfig.damage,
+                position = firePoint.position,
+                direction = direction,
+                speed = bulletConfig.speed
+            });
+        }
     }
 }

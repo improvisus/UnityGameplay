@@ -1,25 +1,23 @@
-using System;
-using Game.Components;
 using UnityEngine;
 
-namespace Game.Enemy.Agents
+namespace Game.Components.Rules
 {
-    public class EnemyAttackAgent : MonoBehaviour
+    public class EnemyAttackRule : MonoBehaviour
     {
-        public event Action<GameObject, GameObject> OnFire;
-        
         [SerializeField]
         private float countdown;
         
-        private EnemyMoveAgent moveAgent;
+        private EnemyMoveRule moveAgent;
 
         private GameObject target;
         private HitPointsComponent targetHitPoints;
+        private WeaponComponent weaponComponent;
         private float currentTime;
 
         private void Awake()
         {
-            moveAgent = GetComponent<EnemyMoveAgent>();
+            moveAgent = GetComponent<EnemyMoveRule>();
+            weaponComponent = GetComponent<WeaponComponent>();
         }
         
         public void SetTarget(GameObject target)
@@ -50,9 +48,12 @@ namespace Game.Enemy.Agents
                 return;
 
             currentTime -= Time.fixedDeltaTime;
+            
             if (currentTime <= 0)
             {
-                OnFire?.Invoke(gameObject, target);
+                var direction = (Vector2) target.transform.position - weaponComponent.Position;
+                weaponComponent.Fire(direction.normalized);
+                
                 currentTime += countdown;
             }
         }

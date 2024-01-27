@@ -13,16 +13,20 @@ namespace Pooling
         protected T prefab;
         
         [SerializeField]
-        protected GameObject container;
+        protected GameObject poolContainer;
+        
+        [SerializeField]
+        protected GameObject instanceContainer;
         
         [SerializeField]
         private int count;
         
         private readonly Queue<T> memoryPool = new Queue<T>();
-        
+        private readonly List<T> activePool = new List<T>();
+
         public void Awake()
         {
-            container.SetActive(false);
+            poolContainer.SetActive(false);
             Build(prefab);
         }
         
@@ -37,8 +41,18 @@ namespace Pooling
         
         public virtual T Create(TArg args)
         {
-            var obj = memoryPool.Dequeue();
-            SetTransform(obj, null);
+            if (!memoryPool.TryDequeue(out var obj))
+            {
+                if (activePool.Count == 0)
+                    throw new Exception("Pull size error");
+ 
+                obj = activePool[0];
+                activePool.Remove(obj);
+            }
+            
+            activePool.Add(obj);
+            
+            SetTransform(obj, instanceContainer.transform);
             obj = Init(obj, args);
             OnCreate?.Invoke(obj);
             return obj;
@@ -46,17 +60,22 @@ namespace Pooling
         
         public virtual void Release(T obj)
         {
+            activePool.Remove(obj);
+            memoryPool.Enqueue(obj);
             OnRelease?.Invoke(obj);
-            SetTransform(obj, container.transform);
+            SetTransform(obj, poolContainer.transform);
         }
         
         protected abstract T Init(T obj, TArg arg);
 
         protected virtual T CreateInstance(T model)
         {
-            var obj = container != null ? Instantiate(model, container.transform) : Instantiate(model);
+            var obj = poolContainer != null ? Instantiate(model, poolContainer.transform) : Instantiate(model);
+            Install(obj);
             return obj;
         }
+
+        protected virtual void Install(T obj){ }
         
         protected virtual void RemoveInstance(T model)
         {

@@ -1,9 +1,8 @@
-﻿using Game.Components;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Game.Bullets.Agents
+namespace Game.Components.Rules
 {
-    public class BulletMoveAgent : MonoBehaviour
+    public class BulletMoveRule : MonoBehaviour
     {
         private DirectionComponent directionComponent;
         private MoveComponent moveComponent;

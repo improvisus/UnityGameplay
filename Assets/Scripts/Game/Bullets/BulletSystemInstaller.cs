@@ -6,6 +6,8 @@ namespace Game.Bullets
     public class BulletSystemInstaller : Installer
     {
         [SerializeField]
+        private BulletsService bulletsService;
+        [SerializeField]
         private BulletPool bulletPool;
         
         [SerializeField]
@@ -15,8 +17,9 @@ namespace Game.Bullets
         
         protected override void Install()
         {
+            bulletsService.Construct(bulletPool);
             bulletDealDamageController.Construct(bulletPool);
-            bulletLevelBoundsController.Construct(bulletPool);
+            bulletLevelBoundsController.Construct(bulletsService, bulletPool);
         }
     }
 }
