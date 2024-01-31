@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Game.Components
 {
     [Serializable]
-    [Is(ObjectAPI.Damageable)]
+    [Is(ObjectType.Damageable)]
     public class HealthComponent : IDisposable
     {
         public AtomicEvent DeathEvent => deathEvent;

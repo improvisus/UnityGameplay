@@ -16,7 +16,7 @@ namespace Game.Actions
         
         public void Invoke(IAtomicObject target)
         {
-            if (!target.Is(ObjectAPI.Damageable))
+            if (!target.Is(ObjectType.Damageable))
                 return;
                 
             var damageAction = target.GetAction<int>(ObjectAPI.TakeDamageAction);
