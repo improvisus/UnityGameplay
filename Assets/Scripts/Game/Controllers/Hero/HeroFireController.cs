@@ -1,5 +1,6 @@
 ﻿using Atomic.Elements;
 using Game.Common;
+using Game.Input;
 using UnityEngine;
 
 namespace Game.Controllers
@@ -7,36 +8,29 @@ namespace Game.Controllers
     public class HeroFireController : MonoBehaviour
     {
         private HeroService heroService;
-        private AnimatorDispatcher animatorDispatcher;
-        private const string FireEvent = "shoot";
         
-        public void Constructs(HeroService heroService)
+        private IFireInput fireInput;
+        
+        public void Constructs(HeroService heroService, IFireInput fireInput)
         {
             this.heroService = heroService;
-        }
-
-        private void Awake()
-        {
-            animatorDispatcher = heroService.Character.Get<AnimatorDispatcher>(ObjectAPI.AnimatorDispatcher);
+            this.fireInput = fireInput;
         }
 
         private void OnEnable()
         {
-            animatorDispatcher.OnEventReceived += OnEventReceived;
+            fireInput.OnFire += OnFireRequest;
         }
         
         private void OnDisable()
         {
-            animatorDispatcher.OnEventReceived -= OnEventReceived;
+            fireInput.OnFire -= OnFireRequest;
         }
         
-        private void OnEventReceived(string eventКey)
+        private void OnFireRequest()
         {
-            if (eventКey == FireEvent)
-            {
-                var fireAction = heroService.Character.Get<IAtomicAction>(ObjectAPI.FireAction);
-                fireAction?.Invoke();
-            }
+            var fireRequest = heroService.Character.Get<IAtomicAction>(ObjectAPI.FireRequest);
+            fireRequest?.Invoke();
         }
     }
 }

@@ -15,17 +15,17 @@ namespace Game.Components
         public IAtomicEvent FireEvent => fireEvent;
         public IAtomicEvent FireRequest => fireRequest;
         public AndExpression FireCondition => fireCondition;
+        public IAtomicAction FireAction => fireBulletAction;
         
         [SerializeField]
         private BulletPool bulletPool;
         
-        [SerializeField, Get(ObjectAPI.FirePoint)]
+        [SerializeField]
         private Transform firePoint;
         
         [SerializeField, Get(ObjectAPI.FireRequest)]
         private AtomicEvent fireRequest = new();
         
-        [SerializeField, Get(ObjectAPI.FireAction)]
         private FireBulletAction fireBulletAction = new();
         
         private AtomicEvent fireEvent = new();
