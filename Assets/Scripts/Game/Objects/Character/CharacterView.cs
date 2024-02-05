@@ -1,5 +1,4 @@
 ﻿using System;
-using Atomic.Objects;
 using Game.AnimationMechanics;
 using Game.Common;
 using UnityEngine;
@@ -11,16 +10,8 @@ namespace Game.Objects
     {
         [SerializeField]
         private Animator animator;
-        [SerializeField, Get(ObjectAPI.AnimatorDispatcher)]
+        [SerializeField]
         private AnimatorDispatcher animatorDispatcher;
-        
-        [SerializeField]
-        private AudioSource audioSource;
-        [SerializeField]
-        private AudioClip fireSFX;
-        
-        [SerializeField]
-        private ParticleSystem fireVFX;
         
         private MoveAnimMechanics moveAnimMechanics;
         private FireAnimMechanics fireAnimMechanics;
@@ -29,11 +20,9 @@ namespace Game.Objects
         public void Compose(CharacterCore core)
         {
             moveAnimMechanics = new MoveAnimMechanics(animator, core.moveComponent.IsMoving);
-            fireAnimMechanics = new FireAnimMechanics(animator, core.fireComponent.FireRequest);
-            fireAnimListener = new FireAnimListener(animatorDispatcher, core.fireComponent.FireAction);
             
-            core.fireComponent.FireEvent.Subscribe(() => fireVFX.Play(withChildren: true));
-            core.fireComponent.FireEvent.Subscribe(() => audioSource.PlayOneShot(fireSFX));
+            fireAnimMechanics = new FireAnimMechanics(animator, core.attackComponent.AttackRequest, core.attackComponent.AttackCondition);
+            fireAnimListener = new FireAnimListener(animatorDispatcher, core.attackComponent.AttackAction);
         }
 
         public void OnEnable()

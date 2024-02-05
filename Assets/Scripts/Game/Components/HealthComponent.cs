@@ -20,7 +20,7 @@ namespace Game.Components
         
         private readonly AtomicEvent deathEvent = new();
         
-        [SerializeField, Get(ObjectAPI.TakeDamageAction)]
+        [Get(ObjectAPI.TakeDamageAction)]
         private TakeDamageAction takeDamageAction = new();
         
         private DeathMechanics deathMechanics;

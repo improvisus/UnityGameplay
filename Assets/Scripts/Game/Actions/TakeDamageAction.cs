@@ -1,11 +1,9 @@
-﻿using System;
-using Atomic.Elements;
+﻿using Atomic.Elements;
 using Game.Elements;
 using Sirenix.OdinInspector;
 
 namespace Game.Actions
 {
-    [Serializable]
     public class TakeDamageAction : IAtomicAction<int>
     {
         private HitPoints hitPoints;

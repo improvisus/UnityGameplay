@@ -1,37 +1,44 @@
 ﻿using System;
+using Atomic.Elements;
 using Atomic.Objects;
 using Game.Common;
 using Game.Components;
+using Game.Conditions;
 using Game.Mechanics;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Game.Objects
 {
     [Serializable]
     public class CharacterCore : IDisposable
     {
-        [SerializeField, Get(ObjectAPI.Transform)]
-        private Transform mainTransform;
-        
         [Section]
         public MoveComponent moveComponent;
         [Section]
         public HealthComponent healthComponent;
         [Section]
-        public FireComponent fireComponent;
+        public WeaponComponent weaponComponent;
+        [Section]
+        public AttackComponent attackComponent;
+        
+        [SerializeField, Get(ObjectAPI.Transform)]
+        private Transform mainTransform;
         
         private RotationMechanics rotationMechanics;
         private DestroyMechanics destroyMechanics;
         
-        public void Compose(AtomicObject atomicObject)
+        public void Compose(Character character)
         {
             moveComponent.Compose(mainTransform);
             healthComponent.Compose();
-            fireComponent.Compose();
-
-            fireComponent.FireCondition.Append(moveComponent.IsNotMoving);
+            attackComponent.Compose(weaponComponent);
+            weaponComponent.Compose();
             
-            destroyMechanics = new DestroyMechanics(healthComponent.DeathEvent, atomicObject);
+            attackComponent.AttackCondition.Compose(() => moveComponent.IsNotMoving.Value && weaponComponent.CurrentWeapon.Value.CanAttack.Value);
+            
+            
+            destroyMechanics = new DestroyMechanics(healthComponent.DeathEvent, character);
             rotationMechanics = new RotationMechanics(mainTransform, moveComponent.Direction);
         }
 

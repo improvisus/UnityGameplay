@@ -6,12 +6,16 @@ namespace Game.Elements
     [Serializable]
     public class Countdown
     {
+        [SerializeField]
         public float duration;
-        public float currentTime;
+        private float currentTime;
 
-        public bool IsPlaying => currentTime > 0;
+        private bool enable = false;
         
-        public bool IsFinished => currentTime <= 0;
+        public bool IsPlaying => enable && currentTime > 0;
+        
+        public bool IsFinished => enable && ( currentTime <= 0 || currentTime >= duration);
+
 
         public Countdown()
         {
@@ -23,14 +27,21 @@ namespace Game.Elements
             this.duration = duration;
             Reset();
         }
+
+        public void Stop()
+        {
+            enable = false;
+        }
         
         public void Update(float deltaTime)
         {
-            currentTime = Mathf.Max(currentTime - deltaTime, 0);
+            if(enable)
+                currentTime = Mathf.Max(currentTime - deltaTime, 0);
         }
 
         public void Reset()
         {
+            enable = true;
             currentTime = duration;
         }
     }

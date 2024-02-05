@@ -9,11 +9,13 @@ namespace Game.AnimationMechanics
 
         private readonly Animator animator;
         private readonly IAtomicObservable fireEvent;
+        private readonly AtomicFunction<bool> attackCondition;
 
-        public FireAnimMechanics(Animator animator, IAtomicObservable fireEvent)
+        public FireAnimMechanics(Animator animator, IAtomicObservable fireEvent, AtomicFunction<bool> attackCondition)
         {
             this.animator = animator;
             this.fireEvent = fireEvent;
+            this.attackCondition = attackCondition;
         }
         
         public void OnEnable()
@@ -28,7 +30,8 @@ namespace Game.AnimationMechanics
         
         private void OnFire()
         {
-            animator.SetTrigger(Shoot);
+            if(attackCondition.Invoke())
+                animator.SetTrigger(Shoot);
         }
     }
 }

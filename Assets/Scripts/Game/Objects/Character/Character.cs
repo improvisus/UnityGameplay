@@ -6,9 +6,11 @@ namespace Game.Objects
 {
     public class Character : AtomicBehaviour
     {
-        [SerializeField, Section]
+        [Section]
+        [SerializeField]
         private CharacterCore core;
-        [SerializeField, Section]
+        [Section]
+        [SerializeField]
         private CharacterView view;
         
         private void Awake()
@@ -19,6 +21,7 @@ namespace Game.Objects
         public override void Compose()
         {
             base.Compose();
+            
             core.Compose(this);
             view.Compose(core);
         }
@@ -26,6 +29,7 @@ namespace Game.Objects
         protected override void OnEnable()
         {
             base.OnEnable();
+            
             core.OnEnable();
             view.OnEnable();
         }
@@ -33,6 +37,7 @@ namespace Game.Objects
         protected override void OnDisable()
         {
             base.OnDisable();
+            
             core.OnDisable();
             view.OnDisable();
         }
@@ -40,6 +45,7 @@ namespace Game.Objects
         protected override void Update()
         {
             base.Update();
+            
             core.Update(Time.deltaTime);
             view.Update(Time.deltaTime);
         }

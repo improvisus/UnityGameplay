@@ -51,4 +51,5 @@ namespace Game.Engine
 
         protected abstract R Invoke(IReadOnlyList<IAtomicFunction<T, R>> members, T args);
     }
+    
 }

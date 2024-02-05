@@ -12,8 +12,9 @@ namespace Game.Components
     {
         public IAtomicValue<bool> IsMoving => isMoving;
         public IAtomicValue<bool> IsNotMoving => isNotMoving;
-        public AtomicVariable<Vector3> Direction => direction;
-        
+        public IAtomicVariable<Vector3> Direction => direction;
+        public IAtomicValue<float> Speed => speed;
+
         [SerializeField]
         private AtomicVariable<float> speed = new(5);
         [SerializeField, Get(ObjectAPI.MoveDirection)]

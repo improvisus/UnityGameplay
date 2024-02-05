@@ -66,7 +66,7 @@ namespace Game.Pooling
             SetTransform(obj, poolContainer.transform);
         }
         
-        protected abstract T Init(T obj, TArg arg);
+        protected abstract T Init(T projectile, TArg arg);
 
         protected virtual T CreateInstance(T model)
         {

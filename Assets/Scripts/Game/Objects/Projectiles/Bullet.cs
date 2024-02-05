@@ -1,45 +1,34 @@
-using Atomic.Behaviours;
 using Atomic.Elements;
 using Atomic.Objects;
 using Game.Actions;
 using Game.Common;
 using Game.Components;
-using Game.Controllers;
 using Game.Elements;
 using Game.Mechanics;
 using UnityEngine;
 
-namespace Game.Objects
+namespace Game.Objects.Projectiles
 {
-    public class Bullet : AtomicBehaviour
+    public class Bullet : Projectile
     {
-        [SerializeField, Get(ObjectAPI.Transform)]
+        [Section]
+        public MoveComponent moveComponent;
+        
+        [Get(ObjectAPI.Transform)]
+        [SerializeField]
         private Transform mainTransform;
-        
-        [SerializeField, Section]
-        private MoveComponent moveComponent;
-        
         [SerializeField]
         private AtomicVariable<int> damage = new(1);
-        private readonly Countdown countdown = new(5);
-        
-        private readonly AtomicEvent deathEvent = new();
+        [SerializeField]
+        private Countdown lifeTime = new(5);
         
         [Get(ObjectAPI.Reset)]
         private AtomicEvent resetEvent = new();
-
+        private readonly AtomicEvent deathEvent = new();
         private readonly DealDamageAction dealDamageAction = new();
         
-        private LifetimeMechanics lifetimeMechanics;
+        private TimeEventMechanics timeEventMechanics;
         private TriggerMechanics triggerMechanics;
-        private DestroyMechanics destroyMechanics;
-
-        private BulletPool bulletPool;
-        
-        public void Construct(BulletPool bulletPool)
-        {
-            this.bulletPool = bulletPool;
-        }
         
         private void Awake()
         {
@@ -53,23 +42,25 @@ namespace Game.Objects
             moveComponent.Compose(mainTransform);
             dealDamageAction.Compose(damage);
             
-            lifetimeMechanics = new LifetimeMechanics(countdown, deathEvent);
+            timeEventMechanics = new TimeEventMechanics(lifeTime, deathEvent);
             triggerMechanics = new TriggerMechanics(dealDamageAction, deathEvent);
             
-            resetEvent.Subscribe(() => countdown.Reset() );
-            deathEvent.Subscribe(() => bulletPool.Release(this));
+            resetEvent.Subscribe(() => lifeTime.Reset() );
+            deathEvent.Subscribe(() => projectilePool.Release(this));
         }
         
         protected override void Update()
         {
             base.Update();
+            
             moveComponent.Update(Time.deltaTime);
         }
 
         protected override void FixedUpdate()
         {
             base.FixedUpdate();
-            lifetimeMechanics.FixedUpdate(Time.fixedDeltaTime);
+            
+            timeEventMechanics.FixedUpdate(Time.fixedDeltaTime);
         }
 
         private void OnTriggerEnter(Collider other)

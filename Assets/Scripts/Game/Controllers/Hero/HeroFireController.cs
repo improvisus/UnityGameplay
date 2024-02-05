@@ -29,8 +29,9 @@ namespace Game.Controllers
         
         private void OnFireRequest()
         {
-            var fireRequest = heroService.Character.Get<IAtomicAction>(ObjectAPI.FireRequest);
+            var fireRequest = heroService.Character.Get<IAtomicAction>(ObjectAPI.AttackRequest);
             fireRequest?.Invoke();
         }
     }
 }
+
