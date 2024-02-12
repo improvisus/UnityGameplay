@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Atomic.Elements;
 using Game.Engine;
 
-namespace Game.Conditions
+namespace Game.Expressions
 {
     [Serializable]
     public class AndExpression : AtomicExpression<bool>

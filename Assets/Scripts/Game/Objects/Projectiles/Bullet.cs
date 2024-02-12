@@ -17,8 +17,9 @@ namespace Game.Objects.Projectiles
         [Get(ObjectAPI.Transform)]
         [SerializeField]
         private Transform mainTransform;
+        [Get(ObjectAPI.Damage)]
         [SerializeField]
-        private AtomicVariable<int> damage = new(1);
+        private AtomicVariable<int> damage;
         [SerializeField]
         private Countdown lifeTime = new(5);
         

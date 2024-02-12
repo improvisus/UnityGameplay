@@ -2,6 +2,7 @@
 using Atomic.Elements;
 using Atomic.Objects;
 using Game.Common;
+using Game.Expressions;
 using Game.Mechanics;
 using UnityEngine;
 
@@ -13,11 +14,17 @@ namespace Game.Components
         public IAtomicValue<bool> IsMoving => isMoving;
         public IAtomicValue<bool> IsNotMoving => isNotMoving;
         public IAtomicVariable<Vector3> Direction => direction;
-        public IAtomicValue<float> Speed => speed;
-
+        public IAtomicValue<float> MoveSpeed => fullSpeed;
+        
+        [Get(ObjectAPI.MoveSpeedExpression)]
+        public IAtomicExpression<float> MoveSpeedExpression => fullSpeed;
         [SerializeField]
-        private AtomicVariable<float> speed = new(5);
-        [SerializeField, Get(ObjectAPI.MoveDirection)]
+        private FloatProductExpression fullSpeed;
+        
+        [SerializeField]
+        private AtomicVariable<float> baseSpeed = new(5);
+        [Get(ObjectAPI.MoveDirection)]
+        [SerializeField]
         private AtomicVariable<Vector3> direction = new();
         
         [SerializeField]
@@ -29,10 +36,12 @@ namespace Game.Components
         
         public void Compose(Transform transform)
         {
-            isMoving.Compose(() => direction.Value.magnitude > 0);
+            isMoving.Compose(() => fullSpeed.Invoke() != 0 && direction.Value.magnitude > 0);
             isNotMoving.Compose(() => direction.Value.magnitude == 0);
             
-            movementMechanics = new MovementMechanics(transform, speed, direction);
+            fullSpeed.Append(baseSpeed);
+            
+            movementMechanics = new MovementMechanics(transform, fullSpeed, direction);
         }
         
         public void Update(float deltaTime)

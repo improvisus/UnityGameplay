@@ -65,7 +65,7 @@ Transform:
   - {fileID: 3417218417233915242}
   - {fileID: 821765893462206642}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8966384782107602508
 MeshFilter:
@@ -281,25 +281,49 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 19812566, guid: 5c129ddc4d253164a8e65c5e372cf150, type: 3}
+      propertyPath: moveWithTransform
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 19847508, guid: 5c129ddc4d253164a8e65c5e372cf150, type: 3}
       propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19847508, guid: 5c129ddc4d253164a8e65c5e372cf150, type: 3}
+      propertyPath: moveWithTransform
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 19859190, guid: 5c129ddc4d253164a8e65c5e372cf150, type: 3}
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 19859190, guid: 5c129ddc4d253164a8e65c5e372cf150, type: 3}
+      propertyPath: moveWithTransform
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 19894688, guid: 5c129ddc4d253164a8e65c5e372cf150, type: 3}
       propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19894688, guid: 5c129ddc4d253164a8e65c5e372cf150, type: 3}
+      propertyPath: moveWithTransform
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 19895682, guid: 5c129ddc4d253164a8e65c5e372cf150, type: 3}
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 19895682, guid: 5c129ddc4d253164a8e65c5e372cf150, type: 3}
+      propertyPath: moveWithTransform
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 19897572, guid: 5c129ddc4d253164a8e65c5e372cf150, type: 3}
       propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19897572, guid: 5c129ddc4d253164a8e65c5e372cf150, type: 3}
+      propertyPath: moveWithTransform
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 19914738, guid: 5c129ddc4d253164a8e65c5e372cf150, type: 3}
       propertyPath: m_Materials.Array.size

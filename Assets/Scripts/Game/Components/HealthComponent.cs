@@ -15,8 +15,13 @@ namespace Game.Components
     {
         public AtomicEvent DeathEvent => deathEvent;
         
+        [Get(ObjectAPI.HitPoints)]
         [SerializeField]
         private HitPoints hitPoints = new(5, 5);
+
+        [Get(ObjectAPI.Armor)]
+        [SerializeField]
+        private AtomicVariable<int> armor = new(0);
         
         private readonly AtomicEvent deathEvent = new();
         
@@ -27,7 +32,7 @@ namespace Game.Components
         
         public void Compose()
         {
-            takeDamageAction.Compose(hitPoints);
+            takeDamageAction.Compose(hitPoints, armor);
             deathMechanics = new DeathMechanics(hitPoints, deathEvent);
         }
         

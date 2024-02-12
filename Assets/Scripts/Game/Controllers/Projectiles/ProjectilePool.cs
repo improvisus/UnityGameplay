@@ -12,17 +12,20 @@ namespace Game.Controllers
         public struct Args
         {
             public Transform FirePoint;
+            public int Damage;
         }
 
         protected override Projectile Init(Projectile projectile, Args args)
         {
             var projectileDirection = projectile.GetVariable<Vector3>(ObjectAPI.MoveDirection);
             var projectileTransform = projectile.Get<Transform>(ObjectAPI.Transform);
+            var projectileDamage = projectile.GetVariable<int>(ObjectAPI.Damage);
             var resetEvent = projectile.Get<IAtomicEvent>(ObjectAPI.Reset);
-            
+
             resetEvent?.Invoke();
             projectileTransform.position = args.FirePoint.position;
             projectileDirection.Value = args.FirePoint.forward;
+            projectileDamage.Value = args.Damage;
             
             return projectile;
         }

@@ -6,15 +6,16 @@ namespace Game.Elements
     [Serializable]
     public class HitPoints
     {
+        public bool IsFull => hitPoints == maxHitPoints;
         public event Action<int> OnChanged;
         public event Action OnOver;
-        
+
         [SerializeField]
         private int maxHitPoints;
-        
+
         [SerializeField]
         private int hitPoints;
-        
+
         public int Current
         {
             get

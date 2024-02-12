@@ -17,9 +17,11 @@ namespace Atomic.Behaviours
         private List<IEnable> enables;
         private List<IDisable> disables;
         private List<IUpdate> updates;
+        
+        [ShowInInspector]
         private List<IFixedUpdate> fixedUpdates;
         private List<ILateUpdate> lateUpdates;
-
+        
         public override void Compose()
         {
             base.Compose();
@@ -189,7 +191,7 @@ namespace Atomic.Behaviours
 
         protected virtual void OnEnable()
         {
-            for (int i = 0, count = this.enables.Count; i < count; i++)
+            for (int count = this.enables.Count, i = count - 1; i >= 0; i--)
             {
                 IEnable enable = this.enables[i];
                 enable.Enable();
@@ -198,7 +200,7 @@ namespace Atomic.Behaviours
 
         protected virtual void OnDisable()
         {
-            for (int i = 0, count = this.disables.Count; i < count; i++)
+            for (int count = this.disables.Count, i = count - 1; i >= 0; i--)
             {
                 IDisable disable = this.disables[i];
                 disable.Disable();
@@ -209,7 +211,7 @@ namespace Atomic.Behaviours
         {
             float deltaTime = Time.deltaTime;
             
-            for (int i = 0, count = this.updates.Count; i < count; i++)
+            for (int count = this.updates.Count, i = count - 1; i >= 0; i--)
             {
                 IUpdate update = this.updates[i];
                 update.OnUpdate(deltaTime);
@@ -220,7 +222,7 @@ namespace Atomic.Behaviours
         {
             float deltaTime = Time.fixedDeltaTime;
             
-            for (int i = 0, count = this.fixedUpdates.Count; i < count; i++)
+            for (int count = this.fixedUpdates.Count, i = count - 1; i >= 0; i--)
             {
                 IFixedUpdate fixedUpdate = this.fixedUpdates[i];
                 fixedUpdate.OnFixedUpdate(deltaTime);
@@ -231,7 +233,7 @@ namespace Atomic.Behaviours
         {
             float deltaTime = Time.deltaTime;
 
-            for (int i = 0, count = this.lateUpdates.Count; i < count; i++)
+            for (int count = this.lateUpdates.Count, i = count - 1; i >= 0; i--)
             {
                 ILateUpdate lateUpdate = this.lateUpdates[i];
                 lateUpdate.OnLateUpdate(deltaTime);

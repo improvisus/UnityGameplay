@@ -2,6 +2,7 @@
 using Game.Actions;
 using Game.Controllers;
 using Game.Elements;
+using Game.Engine;
 using Game.Mechanics;
 using UnityEngine;
 
@@ -11,9 +12,11 @@ namespace Game.Objects
     {
         public override IAtomicValue<bool> CanAttack => fireCondition;
         public override IAtomicAction AttackAction => attackAction;
-        
+
         [SerializeField]
         private ProjectilePool projectilePool;
+        [SerializeField]
+        private AtomicVariable<int> damage = new(1);
         [SerializeField]
         private Transform firePoint;
         [SerializeField]
@@ -40,7 +43,7 @@ namespace Game.Objects
             
             fireCondition.Compose(() => true);
 
-            projectileCreateAction.Compose(projectilePool, firePoint);
+            projectileCreateAction.Compose(projectilePool, damage, firePoint);
             
             attackAction.Compose(() =>
             {

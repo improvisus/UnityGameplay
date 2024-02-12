@@ -49,7 +49,7 @@ namespace Game.Objects
             core.Update(Time.deltaTime);
             view.Update(Time.deltaTime);
         }
-        
+
         private void OnDestroy()
         {
             core.Dispose();

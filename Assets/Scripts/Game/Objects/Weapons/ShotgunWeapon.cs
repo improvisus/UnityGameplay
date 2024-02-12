@@ -2,6 +2,7 @@
 using Atomic.Elements;
 using Atomic.Objects;
 using Game.Actions;
+using Game.Engine;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Game.Objects
     {
         public override IAtomicValue<bool> CanAttack => fireCondition;
         public override IAtomicAction AttackAction => attackAction;
-        
+
         [Section]
         [SerializeField]
         private View view;

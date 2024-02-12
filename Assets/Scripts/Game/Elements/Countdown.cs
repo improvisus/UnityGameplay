@@ -12,6 +12,7 @@ namespace Game.Elements
 
         private bool enable = false;
         
+        public float CurrentTime => currentTime;
         public bool IsPlaying => enable && currentTime > 0;
         
         public bool IsFinished => enable && ( currentTime <= 0 || currentTime >= duration);

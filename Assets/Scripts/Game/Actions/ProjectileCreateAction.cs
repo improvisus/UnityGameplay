@@ -10,11 +10,13 @@ namespace Game.Actions
     public class ProjectileCreateAction : IAtomicAction
     {
         private ProjectilePool projectilePool;
+        private IAtomicValue<int> projectileDamage;
         private Transform projectilePoint;
         
-        public void Compose(ProjectilePool projectilePool, Transform projectilePoint)
+        public void Compose(ProjectilePool projectilePool, IAtomicValue<int> projectileDamage, Transform projectilePoint)
         {
             this.projectilePool = projectilePool;
+            this.projectileDamage = projectileDamage;
             this.projectilePoint = projectilePoint;
         }
         
@@ -23,7 +25,8 @@ namespace Game.Actions
         {
             projectilePool.Create(new ProjectilePool.Args
             {
-                FirePoint = projectilePoint
+                FirePoint = projectilePoint,
+                Damage = projectileDamage.Value
             });
         }
     }

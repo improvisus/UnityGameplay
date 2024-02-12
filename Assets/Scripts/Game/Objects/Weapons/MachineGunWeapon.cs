@@ -2,7 +2,10 @@
 using Atomic.Elements;
 using Atomic.Objects;
 using Game.Actions;
+using Game.Common;
 using Game.Controllers;
+using Game.Effects;
+using Game.Expressions;
 using UnityEngine;
 
 namespace Game.Objects
@@ -11,7 +14,7 @@ namespace Game.Objects
     {
         public override IAtomicValue<bool> CanAttack => core.FireCondition;
         public override IAtomicAction AttackAction => core.BulletCreateAction;
-        
+
         [Section]
         [SerializeField]
         private Core core;
@@ -29,7 +32,7 @@ namespace Game.Objects
         {
             base.Compose();
             
-            core.Compose();
+            core.Compose(this);
             view.Compose(core);
         }
         
@@ -50,18 +53,31 @@ namespace Game.Objects
             [SerializeField]
             private ProjectilePool projectilePool;
             [SerializeField]
+            private AtomicVariable<int> baseDamage = new(1);
+            [SerializeField]
             private Transform firePoint;
-        
+            
+            [Get(ObjectAPI.DamageExpression)]
+            public IAtomicExpression<int> Damage => fullDamage;
+            [SerializeField]
+            private IntSumExpression fullDamage;
+            
             private readonly AtomicAction attackAction = new();
             private readonly ProjectileCreateAction projectileCreateAction = new();
             private readonly AtomicEvent fireEvent = new();
             private readonly AtomicFunction<bool> fireCondition = new();
 
-            public void Compose()
+            [Get(ObjectAPI.EffectManager)]
+            [SerializeField]
+            private EffectManager effectManager;
+            
+            public void Compose(Weapon weapon)
             {
                 fireCondition.Compose(() => !magazine.IsEmpty);
                 
-                projectileCreateAction.Compose(projectilePool, firePoint);
+                fullDamage.Append(baseDamage);
+                
+                projectileCreateAction.Compose(projectilePool, fullDamage, firePoint);
                 
                 attackAction.Compose(() =>
                 {
@@ -71,6 +87,8 @@ namespace Game.Objects
                         projectileCreateAction?.Invoke();
                     }
                 });
+                
+                effectManager.Compose(weapon);
                 
                 fireEvent.Subscribe(() => magazine.SpendCharge());
             }

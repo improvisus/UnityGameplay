@@ -3,6 +3,7 @@ using Atomic.Elements;
 using Atomic.Objects;
 using Game.Actions;
 using Game.Elements;
+using Game.Engine;
 using UnityEngine;
 
 namespace Game.Objects
@@ -11,7 +12,7 @@ namespace Game.Objects
     {
         public override IAtomicValue<bool> CanAttack { get; } = new AtomicValue<bool>(true);
         public override IAtomicAction AttackAction => attackAction;
-        
+
         [Section]
         [SerializeField]
         private View view;

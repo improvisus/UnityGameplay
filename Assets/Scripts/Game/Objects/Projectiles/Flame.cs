@@ -45,7 +45,7 @@ namespace Game.Objects.Projectiles
         {
             base.Compose();
             
-            lifeTime = new(lengthFire.Value / moveComponent.Speed.Value);
+            lifeTime = new(lengthFire.Value / moveComponent.MoveSpeed.Value);
             
             radiusFire.Subscribe((radius) =>
             {
@@ -56,7 +56,7 @@ namespace Game.Objects.Projectiles
                 
             });
             
-            lengthFire.Subscribe((length) => lifeTime.duration = length / moveComponent.Speed.Value);
+            lengthFire.Subscribe((length) => lifeTime.duration = length / moveComponent.MoveSpeed.Value);
             
             moveComponent.Compose(mainTransform);
             dealDamageAction.Compose(damage);

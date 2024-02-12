@@ -1,12 +1,10 @@
 ﻿using System;
-using Atomic.Elements;
 using Atomic.Objects;
 using Game.Common;
 using Game.Components;
-using Game.Conditions;
+using Game.Effects;
 using Game.Mechanics;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Game.Objects
 {
@@ -25,6 +23,10 @@ namespace Game.Objects
         [SerializeField, Get(ObjectAPI.Transform)]
         private Transform mainTransform;
         
+        [Get(ObjectAPI.EffectManager)]
+        [SerializeField]
+        private EffectManager effectManager;
+        
         private RotationMechanics rotationMechanics;
         private DestroyMechanics destroyMechanics;
         
@@ -35,8 +37,9 @@ namespace Game.Objects
             attackComponent.Compose(weaponComponent);
             weaponComponent.Compose();
             
-            attackComponent.AttackCondition.Compose(() => moveComponent.IsNotMoving.Value && weaponComponent.CurrentWeapon.Value.CanAttack.Value);
+            effectManager.Compose(character);
             
+            attackComponent.AttackCondition.Compose(() => moveComponent.IsNotMoving.Value && weaponComponent.CurrentWeapon.Value.CanAttack.Value);
             
             destroyMechanics = new DestroyMechanics(healthComponent.DeathEvent, character);
             rotationMechanics = new RotationMechanics(mainTransform, moveComponent.Direction);
