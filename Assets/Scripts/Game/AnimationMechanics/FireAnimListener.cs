@@ -4,7 +4,6 @@ namespace Game.AnimationMechanics
 {
     public class FireAnimListener
     {
-        private const string FireEvent = "shoot";
         private readonly AnimatorDispatcher animatorDispatcher;
         private readonly IAtomicAction fireAction;
         
@@ -16,18 +15,18 @@ namespace Game.AnimationMechanics
 
         public void OnEnable()
         {
-            animatorDispatcher.OnEventReceived += OnEventReceived;
+            animatorDispatcher.AddListener(AnimEventKey.OnShoot, OnShootEvent);
         }
-        
+
+
         public void OnDisable()
         {
-            animatorDispatcher.OnEventReceived -= OnEventReceived;
+            animatorDispatcher.RemoveListener(AnimEventKey.OnShoot, OnShootEvent);
         }
         
-        private void OnEventReceived(string eventКey)
+        private void OnShootEvent()
         {
-            if (eventКey == FireEvent)
-                fireAction?.Invoke();
+            fireAction?.Invoke();
         }
     }
 }

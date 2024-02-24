@@ -8,6 +8,7 @@ namespace Game.Actions
     {
         private HitPoints hitPoints;
         private IAtomicValue<int> armor;
+        
         public void Compose(HitPoints hitPoints, IAtomicValue<int> armor) 
         {
             this.hitPoints = hitPoints;
