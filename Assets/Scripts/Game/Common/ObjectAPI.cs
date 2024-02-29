@@ -14,5 +14,6 @@ namespace Game.Common
         public const string Damage = nameof(Damage);
         public const string Armor = nameof(Armor);
         public const string HitPoints = nameof(HitPoints);
+        public const string Blackboard = nameof(Blackboard);
     }
 }

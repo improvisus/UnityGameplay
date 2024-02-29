@@ -1,3 +1,4 @@
+using System;
 using Atomic.Behaviours;
 using Atomic.Objects;
 using UnityEngine;
@@ -12,6 +13,9 @@ namespace Game.Objects
         [Section]
         [SerializeField]
         private CharacterView view;
+        [Section]
+        [SerializeField]
+        private CharacterAI ai;
         
         private void Awake()
         {
@@ -24,32 +28,56 @@ namespace Game.Objects
             
             core.Compose(this);
             view.Compose(core);
+            ai.Compose(this);
         }
 
-        protected override void OnEnable()
+        private void OnEnable()
         {
-            base.OnEnable();
+            base.Enable();
             
             core.OnEnable();
             view.OnEnable();
+            ai.OnEnable();
         }
 
-        protected override void OnDisable()
+        private void OnDisable()
         {
-            base.OnDisable();
+            base.Disable();
             
             core.OnDisable();
             view.OnDisable();
+            ai.OnDisable();
         }
         
-        protected override void Update()
+        private void Update()
         {
-            base.Update();
+            var deltaTime = Time.deltaTime;
             
-            core.Update(Time.deltaTime);
-            view.Update(Time.deltaTime);
+            base.OnUpdate(deltaTime);
+            
+            core.Update(deltaTime);
+            view.Update(deltaTime);
         }
-
+        
+        public void LateUpdate()
+        {
+            var deltaTime = Time.deltaTime;
+            
+            base.OnLateUpdate(deltaTime);
+        }
+        
+        private void FixedUpdate()
+        {
+            var fixedDeltaTime = Time.fixedDeltaTime;
+            
+            base.OnFixedUpdate(fixedDeltaTime);
+            
+            ai.FixedUpdate(fixedDeltaTime);
+        }
+        private void OnDrawGizmos()
+        {
+            ai.OnDrawGizmos();
+        }
         private void OnDestroy()
         {
             core.Dispose();

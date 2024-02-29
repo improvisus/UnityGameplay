@@ -50,17 +50,13 @@ namespace Game.Objects.Projectiles
             deathEvent.Subscribe(() => projectilePool.Release(this));
         }
         
-        protected override void Update()
+        private void Update()
         {
-            base.Update();
-            
             moveComponent.Update(Time.deltaTime);
         }
 
-        protected override void FixedUpdate()
+        private void FixedUpdate()
         {
-            base.FixedUpdate();
-            
             timeEventMechanics.FixedUpdate(Time.fixedDeltaTime);
         }
 

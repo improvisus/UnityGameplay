@@ -4,10 +4,10 @@ using UnityEngine.Profiling;
 
 namespace Atomic.Objects
 {
-    public abstract class AtomicObject : AtomicObjectBase
+    public abstract class AtomicObject : AtomicEntity
     {
         /// <summary>
-        ///     <para>Constructor for atomic object</para>
+        ///     <para>Constructor for atomic object. Don't forget call!</para>
         /// </summary>
         public virtual void Compose()
         {
@@ -17,7 +17,7 @@ namespace Atomic.Objects
             AtomicObjectInfo objectInfo = AtomicCompiler.CompileObject(this.GetType());
             
             this.AddTypes(objectInfo.types);
-            this.AddReferences(this, objectInfo.references);
+            this.AddProperties(this, objectInfo.properties);
             this.AddSections(this, objectInfo.sections);
             
 #if UNITY_EDITOR
@@ -25,20 +25,20 @@ namespace Atomic.Objects
 #endif
         }
 
-        private void AddReferences(object source, IEnumerable<ReferenceInfo> definitions)
+        private void AddProperties(object source, IEnumerable<PropertyInfo> definitions)
         {
-            foreach (ReferenceInfo definition in definitions)
+            foreach (PropertyInfo definition in definitions)
             {
                 string id = definition.id;
                 object value = definition.value(source);
                 
                 if (definition.@override)
                 {
-                    this.references[id] = value;
+                    this.properties[id] = value;
                     continue;
                 }
 
-                this.references.TryAdd(id, value);
+                this.properties.TryAdd(id, value);
             }
         }
         
@@ -49,7 +49,7 @@ namespace Atomic.Objects
                 object section = definition.GetValue(parent);
                 
                 this.AddTypes(definition.types);
-                this.AddReferences(section, definition.references);
+                this.AddProperties(section, definition.references);
                 this.AddSections(section, definition.children);
             }
         }
@@ -59,7 +59,7 @@ namespace Atomic.Objects
         public void ComposeEditor()
         {
             this.types.Clear();
-            this.references.Clear();
+            this.properties.Clear();
             
             this.Compose();
         }

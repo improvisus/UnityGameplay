@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using Atomic.Elements;
 using Atomic.Objects;
 using Game.Common;
-using Game.Engine;
 using Game.Objects;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Game.Components

@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Atomic.Elements
 {
-    [Serializable]
-    public class AtomicVariable<T> : IAtomicVariable<T>, IAtomicObservable<T>, IDisposable
+    [Serializable, InlineProperty]
+    public class AtomicVariable<T> : IAtomicVariableObservable<T>, IDisposable
     {
         public T Value
         {
@@ -29,8 +29,7 @@ namespace Atomic.Elements
 
         private Action<T> onChanged;
 
-        [OnValueChanged("OnValueChanged")]
-        [SerializeField]
+        [SerializeField, HideLabel, OnValueChanged(nameof(OnValueChanged))]
         private T value;
 
         public AtomicVariable()
@@ -43,15 +42,14 @@ namespace Atomic.Elements
             this.value = value;
         }
 
-#if UNITY_EDITOR
         private void OnValueChanged(T value)
         {
             this.onChanged?.Invoke(value);
         }
-#endif
+
         public void Dispose()
         {
-            AtomicUtils.Dispose(ref this.onChanged);
+            DelegateUtils.Dispose(ref this.onChanged);
         }
     }
 }

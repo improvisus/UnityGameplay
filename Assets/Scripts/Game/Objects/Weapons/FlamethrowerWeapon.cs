@@ -2,7 +2,6 @@
 using Game.Actions;
 using Game.Controllers;
 using Game.Elements;
-using Game.Engine;
 using Game.Mechanics;
 using UnityEngine;
 
@@ -70,10 +69,8 @@ namespace Game.Objects
             timePeriod.Stop();
         }
         
-        protected override void FixedUpdate()
+        private void FixedUpdate()
         {
-            base.FixedUpdate();
-            
             timeEventMechanics.FixedUpdate(Time.fixedDeltaTime);
             periodMechanics.FixedUpdate(Time.fixedDeltaTime);
         }

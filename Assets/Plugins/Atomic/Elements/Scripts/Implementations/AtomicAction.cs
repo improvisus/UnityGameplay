@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using Sirenix.OdinInspector;
 
 namespace Atomic.Elements
 {
-    [Serializable]
+    [Serializable, InlineProperty]
     public class AtomicAction : IAtomicAction
     {
         private Action action;
@@ -30,7 +29,7 @@ namespace Atomic.Elements
         }
     }
 
-    [Serializable]
+    [Serializable, InlineProperty]
     public class AtomicAction<T> : IAtomicAction<T>
     {
         private Action<T> action;
@@ -50,13 +49,13 @@ namespace Atomic.Elements
         }
 
         [Button]
-        public void Invoke(T direction)
+        public void Invoke(T arg)
         {
-            this.action?.Invoke(direction);
+            this.action?.Invoke(arg);
         }
     }
     
-    [Serializable]
+    [Serializable, InlineProperty]
     public class AtomicAction<T1, T2> : IAtomicAction<T1, T2>
     {
         private Action<T1, T2> action;
@@ -82,7 +81,7 @@ namespace Atomic.Elements
         }
     }
     
-    [Serializable]
+    [Serializable, InlineProperty]
     public class AtomicAction<T1, T2, T3> : IAtomicAction<T1, T2, T3>
     {
         private Action<T1, T2, T3> action;

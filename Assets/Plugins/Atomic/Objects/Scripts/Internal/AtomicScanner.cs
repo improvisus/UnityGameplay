@@ -7,7 +7,7 @@ namespace Atomic.Objects
     internal static class AtomicScanner
     {
         private static readonly Dictionary<Type, IEnumerable<string>> scannedTypes = new();
-        private static readonly Dictionary<Type, IEnumerable<ReferenceInfo>> scannedReferences = new();
+        private static readonly Dictionary<Type, IEnumerable<PropertyInfo>> scannedValues = new();
         private static readonly Dictionary<Type, IList<SectionInfo>> scannedSections = new();
 
         internal static IEnumerable<string> ScanTypes(Type target)
@@ -22,15 +22,15 @@ namespace Atomic.Objects
             return types;
         }
 
-        internal static IEnumerable<ReferenceInfo> ScanReferences(Type target)
+        internal static IEnumerable<PropertyInfo> ScanValues(Type target)
         {
-            if (scannedReferences.TryGetValue(target, out IEnumerable<ReferenceInfo> references))
+            if (scannedValues.TryGetValue(target, out IEnumerable<PropertyInfo> references))
             {
                 return references;
             }
 
-            references = ScanReferencesInternal(target);
-            scannedReferences.Add(target, references);
+            references = ScanValuesInternal(target);
+            scannedValues.Add(target, references);
             return references;
         }
 
@@ -59,9 +59,9 @@ namespace Atomic.Objects
             return Array.Empty<string>();
         }
 
-        private static IEnumerable<ReferenceInfo> ScanReferencesInternal(Type target)
+        private static IEnumerable<PropertyInfo> ScanValuesInternal(Type target)
         {
-            var result = new List<ReferenceInfo>();
+            var result = new List<PropertyInfo>();
 
             FieldInfo[] fields = ReflectionUtils.GetFields(target);
 
@@ -75,14 +75,14 @@ namespace Atomic.Objects
                     continue;
                 }
 
-                var reference = new ReferenceInfo(attribute.Id, attribute.Override, field.GetValue);
+                var reference = new PropertyInfo(attribute.Id, attribute.Override, field.GetValue);
                 result.Add(reference);
             }
 
-            PropertyInfo[] properties = ReflectionUtils.GetProperties(target);
+            System.Reflection.PropertyInfo[] properties = ReflectionUtils.GetProperties(target);
             for (int i = 0, count = properties.Length; i < count; i++)
             {
-                PropertyInfo property = properties[i];
+                System.Reflection.PropertyInfo property = properties[i];
                 GetAttribute attribute = property.GetCustomAttribute<GetAttribute>();
 
                 if (attribute == null)
@@ -90,7 +90,7 @@ namespace Atomic.Objects
                     continue;
                 }
 
-                var reference = new ReferenceInfo(attribute.Id, attribute.Override, property.GetValue);
+                var reference = new PropertyInfo(attribute.Id, attribute.Override, property.GetValue);
                 result.Add(reference);
             }
 
@@ -105,7 +105,7 @@ namespace Atomic.Objects
                     continue;
                 }
 
-                var reference = new ReferenceInfo(attribute.Id, attribute.Override, obj =>
+                var reference = new PropertyInfo(attribute.Id, attribute.Override, obj =>
                     method.Invoke(obj, Array.Empty<object>()));
 
                 result.Add(reference);
@@ -134,7 +134,7 @@ namespace Atomic.Objects
         {
             Type sectionType = sectionField.FieldType;
             var types = ScanTypes(sectionType);
-            var references = ScanReferences(sectionType);
+            var references = ScanValues(sectionType);
             var children = ScanSections(sectionType);
             return new SectionInfo(types, references, children, sectionField);
         }

@@ -2,7 +2,6 @@
 using Atomic.Elements;
 using Atomic.Objects;
 using Game.Common;
-using Game.Objects;
 using UnityEngine;
 
 namespace Game.Components

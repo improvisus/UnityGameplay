@@ -4,7 +4,7 @@ using Sirenix.OdinInspector;
 namespace Atomic.Elements
 {
     [Serializable]
-    public sealed class AtomicFunction<T> : IAtomicFunction<T>
+    public class AtomicFunction<T> : IAtomicFunction<T>
     {
         private Func<T> func;
 

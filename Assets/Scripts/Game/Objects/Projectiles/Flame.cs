@@ -76,17 +76,13 @@ namespace Game.Objects.Projectiles
             sphereCollider.center = centerSphere;
         }
         
-        protected override void Update()
+        private void Update()
         {
-            base.Update();
-            
             moveComponent.Update(Time.deltaTime);
         }
 
-        protected override void FixedUpdate()
+        private void FixedUpdate()
         {
-            base.FixedUpdate();
-            
             timeEventMechanics.FixedUpdate(Time.fixedDeltaTime);
         }
 

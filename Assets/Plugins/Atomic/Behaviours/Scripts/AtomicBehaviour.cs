@@ -1,68 +1,53 @@
 using System.Collections.Generic;
 using Atomic.Objects;
 using Sirenix.OdinInspector;
-using UnityEngine;
+
+// ReSharper disable ConvertToAutoPropertyWithPrivateSetter
 
 namespace Atomic.Behaviours
 {
-    public class AtomicBehaviour : AtomicObject
+    public class AtomicBehaviour : AtomicObject, IAtomicBehaviour,
+        IEnable,
+        IDisable,
+        IUpdate,
+        IFixedUpdate,
+        ILateUpdate
     {
+        [ShowInInspector, ReadOnly, HideInEditorMode, PropertyOrder(151)]
+        public bool IsEnable => this.isEnable;
+
         [Title("Logic"), PropertySpace, PropertyOrder(150)]
         [ShowInInspector, HideInEditorMode]
-        private HashSet<ILogic> logicSet;
+        private readonly List<ILogic> allLogics = new();
         
-        [ShowInInspector, HideInEditorMode, PropertyOrder(150)]
-        private Dictionary<string, ILogic> logicMap;
+        private readonly List<IEnable> enables = new();
+        private readonly List<IDisable> disables = new();
+        private readonly List<IUpdate> updates = new();
+        private readonly List<IFixedUpdate> fixedUpdates = new();
+        private readonly List<ILateUpdate> lateUpdates = new();
 
-        private List<IEnable> enables;
-        private List<IDisable> disables;
-        private List<IUpdate> updates;
-        
-        [ShowInInspector]
-        private List<IFixedUpdate> fixedUpdates;
-        private List<ILateUpdate> lateUpdates;
-        
-        public override void Compose()
-        {
-            base.Compose();
-            this.logicSet = new HashSet<ILogic>();
-            this.logicMap = new Dictionary<string, ILogic>();
+        private readonly List<IEnable> _enableCache = new();
+        private readonly List<IDisable> _disableCache = new();
+        private readonly List<IUpdate> _updateCache = new();
+        private readonly List<IFixedUpdate> _fixedUpdateCache = new();
+        private readonly List<ILateUpdate> _lateUpdateCache = new();
 
-            this.enables = new List<IEnable>();
-            this.disables = new List<IDisable>();
+        private bool isEnable;
 
-            this.updates = new List<IUpdate>();
-            this.fixedUpdates = new List<IFixedUpdate>();
-            this.lateUpdates = new List<ILateUpdate>();
-        }
-
-        public bool AddLogic(string key, ILogic target)
-        {
-            if (this.logicMap.TryAdd(key, target))
-            {
-                return this.AddLogic(target);
-            }
-
-            return false;
-        }
-
-        public bool AddLogic(ILogic target)
+        public void AddLogic(ILogic target)
         {
             if (target == null)
             {
-                return false;
+                return;
             }
 
-            if (!this.logicSet.Add(target))
-            {
-                return false;
-            }
+            this.allLogics.Add(target);
 
             if (target is IEnable enable)
             {
                 this.enables.Add(enable);
 
-                if (this.enabled)
+                if (this.isEnable)
                 {
                     enable.Enable();
                 }
@@ -87,30 +72,18 @@ namespace Atomic.Behaviours
             {
                 this.lateUpdates.Add(lateUpdate);
             }
-
-            return true;
-        }
-        
-        public bool RemoveLogic(string key)
-        {
-            if (this.logicMap.Remove(key, out var target))
-            {
-                return this.RemoveLogic(target);
-            }
-
-            return false;
         }
 
-        public bool RemoveLogic(ILogic target)
+        public void RemoveLogic(ILogic target)
         {
             if (target == null)
             {
-                return false;
+                return;
             }
-            
-            if (!this.logicSet.Remove(target))
+
+            if (!this.allLogics.Remove(target))
             {
-                return false;
+                return;
             }
 
             if (target is IEnable enable)
@@ -135,107 +108,120 @@ namespace Atomic.Behaviours
 
             if (target is IDisable disable)
             {
-                if (this.enabled)
+                if (this.isEnable)
                 {
                     disable.Disable();
                 }
             }
-
-            return true;
         }
 
-        public void AddLogics(IEnumerable<ILogic> targets)
+        public ILogic[] LogicElements()
         {
-            foreach (var target in targets)
-            {
-                this.AddLogic(target);
-            }
+            return this.allLogics.ToArray();
         }
 
-        public void RemoveLogics(IEnumerable<ILogic> targets)
+        public int LogicElementsNonAlloc(ILogic[] results)
         {
-            foreach (var target in targets)
-            {
-                this.RemoveLogic(target);
-            }
-        }
+            int i = 0;
 
-        public bool FindLogic<T>(out T result) where T : ILogic
-        {
-            foreach (var element in this.logicSet)
+            foreach (var element in this.allLogics)
             {
-                if (element is T tElement)
-                {
-                    result = tElement;
-                    return true;
-                }
+                results[i++] = element;
             }
 
-            result = default;
-            return false;
+            return i;
         }
 
-        public bool RemoveLogic<T>() where T : ILogic
+        public IList<ILogic> LogicElementsUnsafe()
         {
-            foreach (var element in this.logicSet)
+            return this.allLogics;
+        }
+
+        public void Enable()
+        {
+            this.isEnable = true;
+
+            if (this.enables.Count == 0)
             {
-                if (element is T)
-                {
-                    this.RemoveLogic(element);
-                    return true;
-                }
+                return;
             }
 
-            return false;
-        }
+            _enableCache.Clear();
+            _enableCache.AddRange(this.enables);
 
-        protected virtual void OnEnable()
-        {
-            for (int count = this.enables.Count, i = count - 1; i >= 0; i--)
+            for (int i = 0, count = _enableCache.Count; i < count; i++)
             {
-                IEnable enable = this.enables[i];
+                IEnable enable = _enableCache[i];
                 enable.Enable();
             }
         }
 
-        protected virtual void OnDisable()
+        public void Disable()
         {
-            for (int count = this.disables.Count, i = count - 1; i >= 0; i--)
+            if (this.disables.Count == 0)
             {
-                IDisable disable = this.disables[i];
+                return;
+            }
+
+            _disableCache.Clear();
+            _disableCache.AddRange(this.disables);
+
+            for (int i = 0, count = _disableCache.Count; i < count; i++)
+            {
+                IDisable disable = _disableCache[i];
                 disable.Disable();
             }
+
+            this.isEnable = false;
         }
 
-        protected virtual void Update()
+        public void OnUpdate(float deltaTime)
         {
-            float deltaTime = Time.deltaTime;
-            
-            for (int count = this.updates.Count, i = count - 1; i >= 0; i--)
+            if (this.updates.Count == 0)
             {
-                IUpdate update = this.updates[i];
+                return;
+            }
+
+            _updateCache.Clear();
+            _updateCache.AddRange(this.updates);
+
+            for (int i = 0, count = _updateCache.Count; i < count; i++)
+            {
+                IUpdate update = _updateCache[i];
                 update.OnUpdate(deltaTime);
             }
         }
 
-        protected virtual void FixedUpdate()
+        public void OnFixedUpdate(float deltaTime)
         {
-            float deltaTime = Time.fixedDeltaTime;
-            
-            for (int count = this.fixedUpdates.Count, i = count - 1; i >= 0; i--)
+            if (this.fixedUpdates.Count == 0)
             {
-                IFixedUpdate fixedUpdate = this.fixedUpdates[i];
+                return;
+            }
+
+            _fixedUpdateCache.Clear();
+            _fixedUpdateCache.AddRange(this.fixedUpdates);
+
+            for (int i = 0, count = _fixedUpdateCache.Count; i < count; i++)
+            {
+                IFixedUpdate fixedUpdate = _fixedUpdateCache[i];
                 fixedUpdate.OnFixedUpdate(deltaTime);
             }
         }
 
-        private void LateUpdate()
+        public void OnLateUpdate(float deltaTime)
         {
-            float deltaTime = Time.deltaTime;
-
-            for (int count = this.lateUpdates.Count, i = count - 1; i >= 0; i--)
+            if (this.lateUpdates.Count == 0)
             {
-                ILateUpdate lateUpdate = this.lateUpdates[i];
+                return;
+            }
+
+            _lateUpdateCache.Clear();
+            _lateUpdateCache.AddRange(this.lateUpdates);
+
+            for (int i = 0, count = _lateUpdateCache.Count; i < count; i++)
+            {
+                ILateUpdate lateUpdate = _lateUpdateCache[i];
                 lateUpdate.OnLateUpdate(deltaTime);
             }
         }

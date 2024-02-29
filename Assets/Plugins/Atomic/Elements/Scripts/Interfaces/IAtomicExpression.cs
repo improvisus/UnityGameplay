@@ -11,5 +11,4 @@ namespace Atomic.Elements
         void Append(IAtomicFunction<T, R> member);
         void Remove(IAtomicFunction<T, R> member);
     }
-    
 }

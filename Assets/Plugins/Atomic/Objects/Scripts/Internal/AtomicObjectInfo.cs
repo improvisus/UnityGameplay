@@ -5,17 +5,17 @@ namespace Atomic.Objects
     internal sealed class AtomicObjectInfo
     {
         internal readonly IEnumerable<string> types;
-        internal readonly IEnumerable<ReferenceInfo> references;
+        internal readonly IEnumerable<PropertyInfo> properties;
         internal readonly IEnumerable<SectionInfo> sections;
 
         internal AtomicObjectInfo(
             IEnumerable<string> types,
-            IEnumerable<ReferenceInfo> references,
+            IEnumerable<PropertyInfo> properties,
             IEnumerable<SectionInfo> sections
         )
         {
             this.types = types;
-            this.references = references;
+            this.properties = properties;
             this.sections = sections;
         }
     }

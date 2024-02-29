@@ -1,9 +1,10 @@
 using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Atomic.Elements
 {
-    [Serializable]
+    [Serializable, InlineProperty]
     public sealed class AtomicValue<T> : IAtomicValue<T>
     {
         public T Value
@@ -11,7 +12,7 @@ namespace Atomic.Elements
             get { return this.value; }
         }
 
-        [SerializeField]
+        [SerializeField, HideLabel]
         private T value;
 
         public AtomicValue(T value)

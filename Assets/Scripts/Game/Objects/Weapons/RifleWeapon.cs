@@ -3,7 +3,6 @@ using Atomic.Elements;
 using Atomic.Objects;
 using Game.Actions;
 using Game.Elements;
-using Game.Engine;
 using UnityEngine;
 
 namespace Game.Objects
@@ -56,10 +55,8 @@ namespace Game.Objects
             });
         }
         
-        protected override void FixedUpdate()
+        private void FixedUpdate()
         {
-            base.FixedUpdate();
-            
             fireCountdown.Update(Time.fixedDeltaTime);
         }
         
