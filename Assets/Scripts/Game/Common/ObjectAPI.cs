@@ -15,5 +15,8 @@ namespace Game.Common
         public const string Armor = nameof(Armor);
         public const string HitPoints = nameof(HitPoints);
         public const string Blackboard = nameof(Blackboard);
+        public const string StateMachine = nameof(StateMachine);
+        public const string StateCommands = nameof(StateCommands);
+        public const string FoundTarget = nameof(FoundTarget);
     }
 }

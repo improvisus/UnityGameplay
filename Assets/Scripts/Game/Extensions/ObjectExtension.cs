@@ -11,5 +11,7 @@ namespace Game.Extensions
         {
             return !IsNull(value);
         }
+        
+        
     }
 }

@@ -39,7 +39,9 @@ namespace Game.Objects
             
             effectManager.Compose(character);
             
-            attackComponent.AttackCondition.Compose(() => moveComponent.IsNotMoving.Value && weaponComponent.CurrentWeapon.Value.CanAttack.Value);
+            attackComponent.AttackCondition.Compose(() =>
+                moveComponent.IsNotMoving.Value &&
+                weaponComponent.CurrentWeapon.Value.CanAttack.Value);
             
             destroyMechanics = new DestroyMechanics(healthComponent.DeathEvent, character);
             rotationMechanics = new RotationMechanics(mainTransform, moveComponent.Direction);

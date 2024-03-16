@@ -1,5 +1,6 @@
 ﻿using AIModule;
 using Atomic.Objects;
+using Commands;
 using UnityEngine;
 
 namespace Game.AI.Sensors
@@ -13,8 +14,12 @@ namespace Game.AI.Sensors
         private static readonly Collider[] buffer = new Collider[32];
         
         [SerializeField, BlackboardKey]
+        private ushort targetSensorEnabled;
+        
+        [SerializeField, BlackboardKey]
         private ushort center;
 
+        
         [SerializeField, BlackboardKey]
         private ushort radius;
         
@@ -26,12 +31,16 @@ namespace Game.AI.Sensors
         
         public override void OnUpdate(IBlackboard blackboard, float deltaTime)
         {
-            if (!blackboard.TryGetObject(this.center, out Transform center) ||
+            if (!blackboard.TryGetBool(this.targetSensorEnabled, out bool targetSensorEnabled) ||
+                !blackboard.TryGetObject(this.center, out Transform center) ||
                 !blackboard.TryGetFloat(this.radius, out float radius))
             {
                 return;
             }
 
+            if(!targetSensorEnabled)
+                return;
+            
             int count = Physics.OverlapSphereNonAlloc(center.position, radius, buffer, layerMask);
             for (var n = 0; n < count; n++)
             {
@@ -39,7 +48,14 @@ namespace Game.AI.Sensors
 
                 if (!collider.TryGetComponent(out IAtomicObject obj))
                     continue;
+
+                if (obj == null || obj.Equals(null))
+                {
+                    blackboard.DeleteObject(target);
+                    return;
+                }
                 
+                blackboard.SetObject(target, obj);
                 return;
             }
 

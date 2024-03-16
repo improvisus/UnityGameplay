@@ -23,11 +23,6 @@ namespace AIModule
         public const ushort MoveToTargetEnabled = 16; // bool
         public const ushort WaitForSecondsEnabled = 17; // bool
         public const ushort StartTime = 18; // float
-        public const ushort FollowTarget = 19; // IAtomicObject
-        public const ushort Waypoints = 20; // Transform[]
-        public const ushort WaypointIndex = 21; // int
-        public const ushort MoveToPosition = 22; // Vector3
-        public const ushort FollowEnabled = 23; // bool
-        public const ushort AttackTarget = 24; // IAtomicObject
+        public const ushort TargetSensorEnabled = 19; // bool
     }
 }

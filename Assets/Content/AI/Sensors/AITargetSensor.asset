@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c260da6214ac4addb3e840867f82e6db, type: 3}
   m_Name: AITargetSensor
   m_EditorClassIdentifier: 
+  targetSensorEnabled: 19
   center: 9
   radius: 10
   target: 8

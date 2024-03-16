@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using AIModule;
 using Atomic.Behaviours;
 using Atomic.Objects;
 using UnityEngine;
@@ -16,6 +18,8 @@ namespace Game.Objects
         [Section]
         [SerializeField]
         private CharacterAI ai;
+
+
         
         private void Awake()
         {
@@ -76,11 +80,13 @@ namespace Game.Objects
         }
         private void OnDrawGizmos()
         {
-            ai.OnDrawGizmos();
+            if(Application.isPlaying)
+                ai.OnDrawGizmos();
         }
         private void OnDestroy()
         {
             core.Dispose();
         }
     }
+
 }
