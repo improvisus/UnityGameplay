@@ -25,7 +25,7 @@ namespace Game.AI.Mechanics
         public override void OnUpdate(IBlackboard blackboard, float deltaTime)
         {
             if (!blackboard.TryGetBool(this.executeAttackEnabled, out bool executeAttackEnabled) ||
-                !blackboard.TryGetObject(this.stateCommands, out StateCommands<StateCommand> stateCommands) ||
+                !blackboard.TryGetObject(this.stateCommands, out StateCommands<Command> stateCommands) ||
                 !blackboard.TryGetObject(this.target, out IAtomicObject target))
             {
                 return;
@@ -34,11 +34,11 @@ namespace Game.AI.Mechanics
             if(!executeAttackEnabled)
                 return;
             
-            if (stateCommands.currentKey == StateCommand.Attack && target == null)
+            if (stateCommands.currentKey == Command.Attack && target == null)
                 stateCommands.Undo();
 
-            if(stateCommands.currentKey != StateCommand.Attack && target != null)
-                stateCommands.Execute(StateCommand.Attack, new AttackState(target));
+            if(stateCommands.currentKey != Command.Attack && target != null)
+                stateCommands.Execute(Command.Attack, new AttackState(target));
         }
     }
 }

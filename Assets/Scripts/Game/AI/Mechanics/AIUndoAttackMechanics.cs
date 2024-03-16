@@ -25,7 +25,7 @@ namespace Game.AI.Mechanics
         public override void OnUpdate(IBlackboard blackboard, float deltaTime)
         {
             if (!blackboard.TryGetBool(this.undoAttackEnabled, out bool undoAttackEnabled) ||
-                !blackboard.TryGetObject(this.stateCommands, out StateCommands<StateCommand> stateCommands) ||
+                !blackboard.TryGetObject(this.stateCommands, out StateCommands<Command> stateCommands) ||
                 !blackboard.TryGetObject(this.target, out IAtomicObject target))
             {
                 return;

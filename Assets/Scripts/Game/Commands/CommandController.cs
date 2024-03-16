@@ -18,23 +18,23 @@ namespace Commands
         
         private Transform transformGround;
 
-        private StateCommands<StateCommand> stateCommands;
+        private StateCommands<Command> stateCommands;
         
         private IAtomicValue<IAtomicObject> foundTarget;
         
         private void Start()
         {
             transformGround = character.Get<Transform>(ObjectAPI.Transform);
-            stateCommands = character.Get<StateCommands<StateCommand>>(ObjectAPI.StateCommands);
             foundTarget = character.GetValue<IAtomicObject>(ObjectAPI.FoundTarget);
 
-            stateCommands.Execute(StateCommand.Idle, new IdleState());
+            stateCommands = new StateCommands<Command>(character.Get<StateMachine>(ObjectAPI.StateMachine));
+
+            stateCommands.Execute(Command.Idle, new IdleState());
         }
         
         private void Update()
         {
             UpdateFindTarget();
-
             UpdateInput();
         }
         
@@ -55,22 +55,22 @@ namespace Commands
             var pointClick = ray.GetPoint(rayLength);
 
             if (Input.GetKey(KeyCode.M))
-                stateCommands.Execute(StateCommand.MoveToPoint, new MoveToPositionState(pointClick));
+                stateCommands.Execute(Command.MoveToPoint, new MoveToPositionState(pointClick));
             else if (Input.GetKey(KeyCode.P))
-                stateCommands.Execute(StateCommand.Patrol, new PatrolState(waypoints));
+                stateCommands.Execute(Command.Patrol, new PatrolState(waypoints));
             else if (Input.GetKey(KeyCode.A))
-                stateCommands.Execute(StateCommand.Attack, new AttackState(target));
+                stateCommands.Execute(Command.Attack, new AttackState(target));
             else if (Input.GetKey(KeyCode.F))
-                stateCommands.Execute(StateCommand.MoveToTarget, new MoveToTargetState(target));
+                stateCommands.Execute(Command.MoveToTarget, new MoveToTargetState(target));
         }
 
         private void UpdateFindTarget()
         {
-            if (stateCommands.currentKey == StateCommand.Attack && foundTarget.Value == null)
+            if (stateCommands.currentKey == Command.Attack && foundTarget.Value == null)
                 stateCommands.Undo();
 
-            if (stateCommands.currentKey != StateCommand.Attack && foundTarget.Value != null)
-                stateCommands.Execute(StateCommand.Attack, new AttackState(foundTarget.Value));
+            if (stateCommands.currentKey != Command.Attack && foundTarget.Value != null)
+                stateCommands.Execute(Command.Attack, new AttackState(foundTarget.Value));
         }
     }
 }

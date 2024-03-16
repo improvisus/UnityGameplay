@@ -422,8 +422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blackboard: {fileID: 354273286}
-  scriptableMechanics:
-  - {fileID: 11400000, guid: acfca463e8791704681cc8fe8eb49763, type: 2}
+  scriptableMechanics: []
   plainMechanics: []
   references:
     version: 2
@@ -3183,7 +3182,7 @@ PrefabInstance:
     - target: {fileID: 817725204415565936, guid: 736abe9211a0947df80edc3c2df6391a,
         type: 3}
       propertyPath: core.healthComponent.hitPoints.hitPoints
-      value: 1050
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 817725204415565936, guid: 736abe9211a0947df80edc3c2df6391a,
         type: 3}
@@ -3193,7 +3192,7 @@ PrefabInstance:
     - target: {fileID: 817725204415565936, guid: 736abe9211a0947df80edc3c2df6391a,
         type: 3}
       propertyPath: core.healthComponent.hitPoints.maxHitPoints
-      value: 50
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1523608000847888014, guid: 736abe9211a0947df80edc3c2df6391a,
         type: 3}
@@ -3364,6 +3363,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 817725204415565936, guid: 736abe9211a0947df80edc3c2df6391a,
         type: 3}
+      propertyPath: ai.triggerComponent.center
+      value: 
+      objectReference: {fileID: 24532515}
+    - target: {fileID: 817725204415565936, guid: 736abe9211a0947df80edc3c2df6391a,
+        type: 3}
       propertyPath: core.fireComponent.bulletPool
       value: 
       objectReference: {fileID: 1724234002}
@@ -3371,6 +3375,11 @@ PrefabInstance:
         type: 3}
       propertyPath: ai.enabledTriggerMechanics.value
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 817725204415565936, guid: 736abe9211a0947df80edc3c2df6391a,
+        type: 3}
+      propertyPath: ai.triggerComponent.radius.value
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 817725204415565936, guid: 736abe9211a0947df80edc3c2df6391a,
         type: 3}
@@ -3392,6 +3401,11 @@ PrefabInstance:
       propertyPath: core.weaponComponent.currentWeapon.value
       value: 
       objectReference: {fileID: 317637813}
+    - target: {fileID: 817725204415565936, guid: 736abe9211a0947df80edc3c2df6391a,
+        type: 3}
+      propertyPath: ai.triggerComponent.layerMask.value.m_Bits
+      value: 2048
+      objectReference: {fileID: 0}
     - target: {fileID: 817725204415565936, guid: 736abe9211a0947df80edc3c2df6391a,
         type: 3}
       propertyPath: core.weaponComponent.weapons.Array.data[0]
@@ -3417,6 +3431,11 @@ PrefabInstance:
       propertyPath: core.weaponComponent.weapons.Array.data[4]
       value: 
       objectReference: {fileID: 909952567}
+    - target: {fileID: 817725204415565936, guid: 736abe9211a0947df80edc3c2df6391a,
+        type: 3}
+      propertyPath: ai.triggerComponent.enabledTriggerMechanics.value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1523608000847888014, guid: 736abe9211a0947df80edc3c2df6391a,
         type: 3}
       propertyPath: m_Name

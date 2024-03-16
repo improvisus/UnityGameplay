@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
 using AIModule;
+using UnityEngine;
 
 namespace Commands
 {
     public sealed class StateCommands<T>
     {
-        private StateMachine<T> stateMachine;
-        public T currentKey => stateMachine.CurrentKey;
+        private StateMachine stateMachine;
+        public T currentKey;
         private IAIState currentState;
 
         private Stack<KeyValuePair<T, IAIState>> states = new Stack<KeyValuePair<T, IAIState>>();
 
-        public void Compose(StateMachine<T> stateMachine)
+        public StateCommands(StateMachine stateMachine)
         {
             this.stateMachine = stateMachine;
         }
@@ -36,8 +37,10 @@ namespace Commands
         
         private void SwitchState(T key, IAIState state)
         {
-            stateMachine.SwitchState(key, state);
+            currentKey = key;
+            stateMachine.SwitchState(state);
             currentState = state;
+            Debug.Log(currentKey);
         }
     }
 }

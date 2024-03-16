@@ -53,5 +53,11 @@ namespace Game.AI.Sensors
 
             foundTarget.Value = null;
         }
+        
+        public void OnGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(center.position, radius.Value);
+        }
     }
 }
