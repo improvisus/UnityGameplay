@@ -65,34 +65,30 @@ namespace AIModule.UnityEditor
                 variables[name] = value;
             }
 
-            foreach ((ushort key, Vector2 value) in this.blackboard.Vector2Values())
+            foreach ((ushort key, object value) in this.blackboard.Vector2Values())
             {
                 string name = this.blackboardConfig.NameOf(key);
                 variables[name] = value;
             }
-            
-            foreach ((ushort key, Vector3 value) in this.blackboard.Vector3Values())
+
+            foreach ((ushort key, object value) in this.blackboard.Vector3Values())
             {
                 string name = this.blackboardConfig.NameOf(key);
                 variables[name] = value;
             }
-            
+
+            foreach ((ushort key, object value) in this.blackboard.QuaternionValues())
+            {
+                string name = this.blackboardConfig.NameOf(key);
+                variables[name] = value;
+            }
+
             foreach (var variable in variables)
             {
                 this.DrawVariable(variable);
             }
 
             GUI.enabled = true;
-        }
-        private Dictionary<string, object> DrawValues<T>(IReadOnlyDictionary<ushort, T> values)
-        {
-            var variables = new Dictionary<string, object>();
-            foreach ((ushort key, T value) in values)
-            {
-                string name = this.blackboardConfig.NameOf(key);
-                variables[name] = value;
-            }
-            return variables;
         }
 
         private void DrawVariable(KeyValuePair<string, object> variable)
@@ -137,6 +133,10 @@ namespace AIModule.UnityEditor
             else if (value is Vector3 vector3)
             {
                 EditorGUILayout.Vector3Field(name, vector3);
+            }
+            else if (value is Quaternion quaternion)
+            {
+                EditorGUILayout.Vector3Field(name, quaternion.eulerAngles);
             }
             else if (value is Enum enumValue)
             {

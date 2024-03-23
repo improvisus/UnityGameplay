@@ -12,7 +12,7 @@ namespace AIModule
 {
     public sealed class AIBehaviour : MonoBehaviour, ISerializationCallbackReceiver
     {
-        [ShowInInspector, ReadOnly, HideInEditorMode]
+        [ShowInInspector, ReadOnly, HideInEditorMode, PropertyOrder(-10)]
         public bool IsStarted => this.isStarted;
 
         [SerializeField]

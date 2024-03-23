@@ -2,6 +2,8 @@ using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
+// ReSharper disable UnassignedField.Local
+
 namespace AIModule
 {
     //TODO: написать Editor для HFSM
@@ -16,15 +18,14 @@ namespace AIModule
 
         [HorizontalGroup]
         [ValueDropdown(nameof(DrawStateNames))]
-        [LabelText("To")]
+        [LabelText("    To")]
         [SerializeField]
         internal int targetState;
 
-        [Space]
-        [SerializeField]
-        private AICondition condition;
+        [SerializeReference, Space]
+        private IAICondition condition = default;
 
-        [SerializeField]
+        [SerializeField, Space]
         private AIAction[] actions;
 
         internal bool Check(IBlackboard blackboard)
@@ -50,7 +51,5 @@ namespace AIModule
             return _drawCallback?.Invoke();
         }
 #endif
-        
-        
     }
 }

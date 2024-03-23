@@ -58,6 +58,21 @@ namespace GameEngine
     {
         private readonly List<IAtomicFunction<T, R>> members = new();
 
+        public AtomicExpression()
+        {
+            this.members = new List<IAtomicFunction<T, R>>();
+        }
+
+        public AtomicExpression(params IAtomicFunction<T, R>[] members)
+        {
+            this.members = new List<IAtomicFunction<T, R>>(members);
+        }
+
+        public AtomicExpression(IEnumerable<IAtomicFunction<T, R>> members)
+        {
+            this.members = new List<IAtomicFunction<T, R>>(members);
+        }
+        
         public void Append(IAtomicFunction<T, R> member)
         {
             this.members.Add(member);

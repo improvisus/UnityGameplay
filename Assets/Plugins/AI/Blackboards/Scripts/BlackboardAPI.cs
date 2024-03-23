@@ -18,11 +18,10 @@ namespace AIModule
         public const ushort ExclamationPoint = 11; // GameObject
         public const ushort MeleeDistance = 12; // float
         public const ushort RangeDistance = 13; // float
-        public const ushort MovePosition = 14; // Vector3
-        public const ushort MoveToPositionEnabled = 15; // bool
-        public const ushort MoveToTargetEnabled = 16; // bool
-        public const ushort WaitForSecondsEnabled = 17; // bool
-        public const ushort StartTime = 18; // float
-        public const ushort TargetSensorEnabled = 19; // bool
+        public const ushort MovePosition = 14; // Vector2
+        public const ushort Barn = 15; // IAtomicObject
+        public const ushort Tree = 16; // IAtomicObject
+        public const ushort BarnIsFull = 17; // GameObject
+        public const ushort NoTrees = 18; // GameObject
     }
 }

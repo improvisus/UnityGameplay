@@ -21,6 +21,9 @@ namespace AIModule
         private IAIState[] states = Array.Empty<IAIState>();
 
         [Header("Transitions")]
+#if UNITY_EDITOR
+        [ListDrawerSettings(OnBeginListElementGUI = nameof(DrawTransitionLabel))]
+#endif
         [SerializeField]
         private AIStateTransition[] transitions = Array.Empty<AIStateTransition>();
 
@@ -48,28 +51,25 @@ namespace AIModule
             base.OnUpdate(blackboard, deltaTime);
             
             //Switch to next state:
-            if (this.transitionMap.TryGetValue(this.currentState, out List<AIStateTransition> transitions))
+            List<AIStateTransition> transitions = this.transitionMap[this.currentState];
+            for (int i = 0, count = transitions.Count; i < count; i++)
             {
-                for (int i = 0, count = transitions.Count; i < count; i++)
+                AIStateTransition transition = transitions[i];
+                if (transition.Check(blackboard))
                 {
-                    AIStateTransition transition = transitions[i];
-                    if (transition.Check(blackboard))
-                    {
-                        IAIState previousState = this.states[this.currentState];
-                        previousState.OnStop(blackboard);
-            
-                        transition.Perform(blackboard);
-            
-                        this.currentState = transition.targetState;
-            
-                        IAIState nextState = this.states[this.currentState];
-                        nextState.OnStart(blackboard);
-                        break;
-                    }
+                    IAIState previousState = this.states[this.currentState];
+                    previousState.OnStop(blackboard);
+
+                    transition.Perform(blackboard);
+
+                    this.currentState = transition.targetState;
+
+                    IAIState nextState = this.states[this.currentState];
+                    nextState.OnStart(blackboard);
+                    break;
                 }
             }
 
-//            Debug.LogError(this.currentState);
             //Update current state:
             IAIState currentState = this.states[this.currentState];
             currentState.OnUpdate(blackboard, deltaTime);
@@ -111,7 +111,24 @@ namespace AIModule
                 : $"{index + 1}. {state}";
 
             GUILayout.Space(4);
+            
+            Color color = GUI.color;
+            GUI.color = Color.green;
             GUILayout.Label(label);
+            GUI.color = color;
+        }
+
+        private void DrawTransitionLabel(int index)
+        {
+            AIStateTransition transition = this.transitions[index];
+            IAIState sourceName = this.states[transition.sourceState];
+            IAIState targetName = this.states[transition.targetState];
+
+            GUILayout.Space(4);
+            Color color = GUI.color;
+            GUI.color = Color.yellow;
+            GUILayout.Label($"{sourceName} => {targetName}");
+            GUI.color = color;
         }
 
         private ValueDropdownList<int> DrawStateNames()

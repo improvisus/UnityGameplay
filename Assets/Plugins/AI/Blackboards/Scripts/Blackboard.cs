@@ -32,8 +32,6 @@ namespace AIModule
 
         public float GetFloat(ushort key) => this.floatValues[key];
 
-        public object GetObject(ushort key) => this.objValues[key];
-
         public T GetObject<T>(ushort key) where T : class => this.objValues[key] as T;
 
         public Vector2 GetVector2(ushort key) => this.vector2Values[key];
@@ -48,11 +46,9 @@ namespace AIModule
 
         public bool TryGetFloat(ushort key, out float value) => this.floatValues.TryGetValue(key, out value);
 
-        public bool TryGetObject(ushort key, out object value) => this.objValues.TryGetValue(key, out value);
-
         public bool TryGetObject<T>(ushort key, out T value)
         {
-            if (this.objValues.TryGetValue(key, out object result) && result != null)
+            if (this.objValues.TryGetValue(key, out object result))
             {
                 value = (T) result;
                 return true;
@@ -181,6 +177,8 @@ namespace AIModule
         public IReadOnlyDictionary<ushort, Vector2> Vector2Values() => this.vector2Values;
 
         public IReadOnlyDictionary<ushort, Vector3> Vector3Values() => this.vector3Values;
+        
+        public IReadOnlyDictionary<ushort, Quaternion> QuaternionValues() => this.quaternionValues;
 
         public void OnBeforeSerialize()
         {

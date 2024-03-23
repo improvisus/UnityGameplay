@@ -24,7 +24,13 @@ namespace Atomic.Extensions
         {
             return new AtomicVariable<T>(it);
         }
-
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AtomicFunction<R> AsFunction<R>(Func<R> func)
+        {
+            return new AtomicFunction<R>(func);
+        }
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AtomicFunction<R> AsFunction<T, R>(this T it, Func<T, R> func)
         {

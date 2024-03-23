@@ -115,11 +115,24 @@ namespace Atomic.Extensions
         {
             it.GetAction(name)?.Invoke();
         }
+        
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InvokeAction<T>(this IAtomicObject it, string name, T args)
         {
             it.GetAction<T>(name)?.Invoke(args);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T InvokeFunction<T>(this IAtomicObject it, string name)
+        {
+            IAtomicFunction<T> function = it.GetFunction<T>(name);
+            if (function != null)
+            {
+                return function.Invoke();
+            }
+
+            return default;
         }
 
         public static IAtomicSetter<T> GetSetter<T>(this IAtomicObject it, string name)
@@ -167,6 +180,12 @@ namespace Atomic.Extensions
         public static bool TryGetObservable<T>(this IAtomicObject it, string name, out IAtomicObservable<T> result)
         {
             return it.TryGet(name, out result) && result != null;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void BindAs<T>(this T it, string name, AtomicEntity entity)
+        {
+            entity.AddProperty(name, it);
         }
     }
 }

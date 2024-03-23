@@ -10,7 +10,6 @@ namespace AIModule
         bool GetBool(ushort key);
         int GetInt(ushort key);
         float GetFloat(ushort key);
-        object GetObject(ushort key);
         T GetObject<T>(ushort key) where T : class;
         Vector2 GetVector2(ushort key);
         Vector3 GetVector3(ushort key);
@@ -19,7 +18,6 @@ namespace AIModule
         bool TryGetBool(ushort key, out bool value);
         bool TryGetInt(ushort key, out int value);
         bool TryGetFloat(ushort key, out float value);
-        bool TryGetObject(ushort key, out object value);
         bool TryGetObject<T>(ushort key, out T value);
         bool TryGetVector2(ushort key, out Vector2 value);
         bool TryGetVector3(ushort key, out Vector3 value);
@@ -47,5 +45,6 @@ namespace AIModule
         IReadOnlyDictionary<ushort, object> ObjectValues();
         IReadOnlyDictionary<ushort, Vector2> Vector2Values();
         IReadOnlyDictionary<ushort, Vector3> Vector3Values();
+        IReadOnlyDictionary<ushort, Quaternion> QuaternionValues();
     }
 }

@@ -57,16 +57,7 @@ MonoBehaviour:
     type: float
   - id: 14
     name: MovePosition
-    type: Vector3
+    type: Vector2
   - id: 15
-    name: MoveToPositionEnabled
-    type: bool
-  - id: 16
-    name: MoveToTargetEnabled
-    type: bool
-  - id: 17
-    name: WaitForSecondsEnabled
-    type: bool
-  - id: 18
-    name: StartTime
-    type: float
+    name: Barn
+    type: IAtomicObject
